@@ -63,7 +63,7 @@ class NtustNews
         n[:title] = ps.first.text
         article = ""
         for i in 1..ps.length-1
-          article += "#{ps[i].text}\n"
+          article += "#{ps[i].to_html}\n"
         end
         n[:article] = article
       end
