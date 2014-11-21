@@ -32,8 +32,11 @@ class NtustNews
       title_raws = t.map { |title| title.content.gsub(/\s+/, "") }
       t = doc.xpath('//table[@summary="list"]//td[@valign="top"][not(@width)]//div[@class="h5"]//a/@href')
       urls = t.map { |url|  url.value}
+      ids = t.map { |url| url.value.match(/\/([^\/]+).php/)[1].gsub(/[^0-9a-zA-Z\-\_]/, '') }
       s = doc.xpath('//table[@summary="list"]//td[@valign="top"][not(@width)]//div[@class="message"]')
       summaries = s.map { |ss|  ss.text.gsub(/\s+/, "")}
+      i = doc.xpath('//table[@summary="list"]//td//a[@class="item-image"]//img')
+      images = i.map { |image| URI.join(@base_url, image['src']).to_s }
 
       titles = title_raws.map { |t|
         start = t.index("[")
@@ -50,10 +53,12 @@ class NtustNews
 
       for i in 0..titles.length-1
         h = Hash.new
+        h[:id] = ids[i]
         h[:short_title] = titles[i]
         h[:summary] = summaries[i]
         h[:date] = dates[i]
         h[:url] = urls[i]
+        h[:image] = images[i]
         @news.push(h)
       end
 
