@@ -46,7 +46,7 @@ class NtustNews
         h = Hash.new
         h[:short_title] = titles[i]
         h[:summary] = summaries[i]
-        h[:dates] = dates[i]
+        h[:date] = dates[i]
         h[:url] = urls[i]
         @news.push(h)
       end
